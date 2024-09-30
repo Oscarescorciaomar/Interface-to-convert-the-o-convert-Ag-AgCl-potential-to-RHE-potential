@@ -1,0 +1,52 @@
+from tkinter import *
+from tkinter import messagebox
+from tkinter import ttk
+import sqlite3
+import pandas as pd
+import numpy as np
+
+
+data = pd.read_excel('Values.xlsx', sheet_name='Sheet1', usecols=['Potential'])
+
+
+df = pd.DataFrame(data)
+
+
+root = Tk()
+root.title("App to convert Ag/AgCl potential to RHE potential - Created by Oscar Escorcia")
+root.geometry("600x300")
+
+var =DoubleVar()
+
+l1=Label(root, text= "Insert pH Value=", font='30')
+l1.place(x=10, y=10)
+e1=Entry(root, textvariable= var, width=10)
+e1.place(x=150, y=15)
+
+l2=Label(root, text= "IMPORTANT:", font='30',fg='red')
+l2.place(x=10, y=120)
+
+
+l3=Label(root, text= "Save date as Values", font='30')
+l3.place(x=10, y=160)
+l4=Label(root, text= 'Call column as Potential in excel file', font='30')
+l4.place(x=10, y=200)
+
+
+def exporttxt():
+
+    txtfile = open(r"C:\Users\Admin\PycharmProjects\pythonProject2\excelexport.txt", 'w')
+    txtfile.write(str(df + 0.059 * (var.get()) + 0.1976))
+    messagebox.showinfo("TXT Export", "Export complete")
+
+
+
+b1 = Button(root, text="Export to TXT file", bg="yellow", command= exporttxt, font="20")
+b1.place(x=100, y=70)
+
+
+
+pd.set_option('display.max_rows', 2000)
+
+
+root.mainloop()
